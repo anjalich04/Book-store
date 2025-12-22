@@ -1,0 +1,14 @@
+.hero-section {
+  background: linear-gradient(
+      rgba(0,0,0,0.6),
+      rgba(0,0,0,0.6)
+    ),
+    url("/static/images/books-banner.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 120px 0;
+}
+
+.card img {
+  object-fit: cover;
+}

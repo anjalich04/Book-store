@@ -1,0 +1,77 @@
+{% extends 'store/layouts/main.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<!-- HERO SECTION -->
+<section class="hero-section text-white">
+  <div class="container text-center">
+    <h1 class="display-4 fw-bold">Discover Your Next Favorite Book</h1>
+    <p class="lead">Fiction • Non-Fiction • Academic • Kids • Self-Help</p>
+    <a href="{% url 'collections' %}" class="btn btn-warning btn-lg mt-3">Shop Now</a>
+  </div>
+</section>
+
+<!-- FEATURED BOOKS -->
+<section class=" py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Featured Books</h2>
+    <div class="row">
+      {% for book in products %}
+      <div class="col-md-3 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ book.product_image.url }}" class="card-img-top" height="220">
+          <div class="card-body">
+            <h6>{{ book.name }}</h6>
+            <p class="text-muted">₹{{ book.selling_price }}</p>
+            <a href="{% url 'productview' book.category.slug book.slug %}" class="btn btn-sm btn-success">
+              View
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- CATEGORIES -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Browse Categories</h2>
+    <div class="row">
+      {% for category in categories %}
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+          <img src="{{ category.image.url }}" class="card-img-top" height="200">
+          <div class="card-body text-center">
+            <h5>{{ category.name }}</h5>
+            <a href="{% url 'collectionsview' category.slug %}" class="btn btn-outline-primary btn-sm">
+              Explore
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- WHY CHOOSE US -->
+<section class="py-5">
+  <div class="container text-center">
+    <h2>Why Choose Bookfolio?</h2>
+    <div class="row mt-4">
+      <div class="col-md-3">📦 <h6>Fast Delivery</h6></div>
+      <div class="col-md-3">💳 <h6>Secure Payments</h6></div>
+      <div class="col-md-3">📚 <h6>Wide Collection</h6></div>
+      <div class="col-md-3">🔁 <h6>Easy Returns</h6></div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
