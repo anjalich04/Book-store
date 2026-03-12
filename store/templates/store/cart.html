@@ -1,0 +1,80 @@
+{% extends 'store/layouts/main.html' %}
+{% block content %}
+
+<div class="py-3 bg-secondary">
+    <div class="container">
+        <a class="text-white" href="{% url 'home' %}">Home/</a>
+        <a class="text-white" href="{% url 'cart' %}">Cart</a>
+    </div>
+</div>
+
+<div class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card shadow-soft border-0">
+                    <div class="card-body cartdata">
+                        {% if cart %}
+                        {% for item in cart %}
+                        <div class="row align-items-center product_data mb-3 p-3 rounded-3 bg-light">
+                            <div class="col-md-6">
+                                <h6 class="mb-1">{{ item.product.name }}</h6>
+                                <p class="text-muted small mb-0">by {{ item.product.author }}</p>
+                            </div>
+                            <div class="col-md-2">
+                                <h6 class="price-tag mb-0">Rs {{ item.product.selling_price}}</h6>
+                                {% if item.product.original_price > item.product.selling_price %}
+                                <span class="text-muted small">Was Rs {{ item.product.original_price|floatformat:0 }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-2">
+                                <input type="hidden" class="prod_id" value="{{ item.product.id }}">
+                                {% csrf_token %}
+                                {% if item.product.quantity >= item.product_qty %}
+                                <div class="input-group text-center">
+                                    <button class="input-group-text update-cart-btn decrement-btn">-</button>
+                                    <input type="number" name="Quantity" class="form-control qty-input text-center" value="{{ item.product_qty }}" min="1" max="{{item.product.quantity }}">
+                                    <button class="input-group-text update-cart-btn increment-btn">+</button>
+                                </div>
+                                {% else %}
+                                <h6 class="text-danger small mb-0">Out of stock</h6>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-2 text-end d-flex justify-content-end gap-2">
+                                <button class="btn btn-outline-secondary btn-sm move-to-wishlist">Move to Wishlist</button>
+                                <button class="btn btn-outline-danger delete-cart-item btn-sm">
+                                    <i class="fa fa-trash"></i>Remove
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <h4>Your Cart is Empty!</h4>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card shadow-soft border-0">
+                    <div class="card-body">
+                        <h5 class="mb-3">Order Summary</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Subtotal</span>
+                            <span>Rs {{ total_price|floatformat:0 }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Shipping</span>
+                            <span>Free</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 fw-semibold">
+                            <span>Total</span>
+                            <span>Rs {{ total_price|floatformat:0 }}</span>
+                        </div>
+                        <a href="{% url 'checkout' %}" class="btn btn-primary w-100">Proceed to Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

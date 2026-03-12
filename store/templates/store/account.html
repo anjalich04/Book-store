@@ -1,0 +1,143 @@
+{% extends 'store/layouts/main.html' %}
+{% block content %}
+
+<div class="py-3 bg-secondary">
+  <div class="container">
+    <a class="text-white" href="{% url 'home' %}">Home/</a>
+    <a class="text-white" href="{% url 'account' %}">Account</a>
+  </div>
+</div>
+
+<div class="py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-3">
+        <div class="card shadow-soft border-0">
+          <div class="card-body">
+            <h6 class="mb-3">Dashboard</h6>
+            <div class="nav flex-column nav-pills" id="accountTabs" role="tablist">
+              <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-orders" type="button">Orders</button>
+              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-wishlist" type="button">Wishlist</button>
+              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-profile" type="button">Profile</button>
+              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-address" type="button">Address Book</button>
+              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-reviews" type="button">Reviews</button>
+              <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-reco" type="button">Recommendations</button>
+            </div>
+          </div>
+        </div>
+        <div class="card shadow-soft border-0 mt-3">
+          <div class="card-body">
+            <p class="mb-2">Wishlist items: <strong>{{ wishlist_count }}</strong></p>
+            <p class="mb-2">Cart items: <strong>{{ cart_count }}</strong></p>
+            <p class="mb-0">Orders: <strong>{{ orders|length }}</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-9">
+        <div class="card shadow-soft border-0">
+          <div class="card-body">
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="tab-orders">
+                <h5 class="mb-3">Orders</h5>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Tracking</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for order in orders %}
+                      <tr>
+                        <td>{{ order.tracking_no }}</td>
+                        <td>Rs {{ order.total_price }}</td>
+                        <td>{{ order.status }}</td>
+                        <td><a href="{% url 'orderview' order.tracking_no %}" class="btn btn-sm btn-outline-dark">View</a></td>
+                      </tr>
+                      {% empty %}
+                      <tr><td colspan="4">No orders yet.</td></tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="tab-pane fade" id="tab-wishlist">
+                <h5 class="mb-3">Wishlist</h5>
+                {% for item in wishlist_items %}
+                <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                  <div>
+                    <strong>{{ item.product.name }}</strong>
+                    <div class="text-muted small">by {{ item.product.author }}</div>
+                  </div>
+                  <div>
+                    <a href="{% url 'productview' item.product.category.slug item.product.slug %}" class="btn btn-sm btn-outline-dark">View</a>
+                  </div>
+                </div>
+                {% empty %}
+                <p>No wishlist items.</p>
+                {% endfor %}
+              </div>
+
+              <div class="tab-pane fade" id="tab-profile">
+                <h5 class="mb-3">Profile</h5>
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-md-6 mb-2">
+                      <label>First Name</label>
+                      <input type="text" name="first_name" class="form-control" value="{{ request.user.first_name }}">
+                    </div>
+                    <div class="col-md-6 mb-2">
+                      <label>Last Name</label>
+                      <input type="text" name="last_name" class="form-control" value="{{ request.user.last_name }}">
+                    </div>
+                    <div class="col-md-12 mb-2">
+                      <label>Email</label>
+                      <input type="email" name="email" class="form-control" value="{{ request.user.email }}">
+                    </div>
+                  </div>
+                  <button class="btn btn-primary">Save Changes</button>
+                  <a href="{% url 'change_password' %}" class="btn btn-outline-secondary ms-2">Change Password</a>
+                </form>
+              </div>
+
+              <div class="tab-pane fade" id="tab-address">
+                <h5 class="mb-3">Address Book</h5>
+                <p class="text-muted">Multiple address support can be added here.</p>
+              </div>
+
+              <div class="tab-pane fade" id="tab-reviews">
+                <h5 class="mb-3">Reviews</h5>
+                <p class="text-muted">Review management will appear here.</p>
+              </div>
+
+              <div class="tab-pane fade" id="tab-reco">
+                <h5 class="mb-3">Recommendations</h5>
+                <div class="row g-3">
+                  {% for item in recommendations %}
+                  <div class="col-md-4">
+                    <div class="card shadow-soft border-0 p-3 h-100">
+                      <strong>{{ item.name }}</strong>
+                      <div class="text-muted small">by {{ item.author }}</div>
+                      <div class="mt-2"><a href="{% url 'productview' item.category.slug item.slug %}" class="btn btn-sm btn-outline-dark">View</a></div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

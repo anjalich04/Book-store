@@ -1,0 +1,47 @@
+{% extends 'store/layouts/main.html' %}
+{% block content %}
+
+<div class="py-3 bg-secondary">
+    <div class="container">
+        <a class="text-white" href="{% url 'home' %}">Home/</a>
+        <a class="text-white" href="{% url 'wishlist' %}">Wishlist</a>
+    </div>
+</div>
+
+<div class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow-soft border-0">
+                    <div class="card-body wishdata">
+                        {% if wishlist %}
+                        {% for item in wishlist %}
+                        <div class="row align-items-center product_data mb-3 p-3 rounded-3 bg-light">
+                            <div class="col-md-5 my-auto">
+                                <h6 class="mb-1">{{ item.product.name }}</h6>
+                                <p class="text-muted small mb-0">by {{ item.product.author }}</p>
+                            </div>
+                            <div class="col-md-2 my-auto">
+                                <h6 class="price-tag mb-0">Rs {{ item.product.selling_price}}</h6>
+                            </div>
+                            <div class="col-md-5 my-auto d-flex justify-content-end gap-2">
+                                <input type="hidden" class="prod_id" value="{{ item.product.id }}">
+                                {% csrf_token %}
+                                <button class="btn btn-outline-primary move-to-cart">Move to Cart</button>
+                                <a href="{% url 'productview' item.product.category.slug item.product.slug %}" class="btn btn-outline-dark">View</a>
+                                <button class="btn btn-outline-danger delete-wishlist-item">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <h4>Your Wishlist is Empty!</h4>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+<footer class="site-footer mt-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <h5 class="site-title">BookFolio</h5>
+                <p class="text-muted mb-3">A curated bookstore experience with timeless stories, thoughtful non-fiction, and fresh voices.</p>
+                <div class="d-flex gap-3">
+                    <a href="#" class="text-muted"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="text-muted"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="text-muted"><i class="fa-brands fa-facebook"></i></a>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h6 class="text-uppercase text-muted">Quick Links</h6>
+                <ul class="list-unstyled">
+                    <li><a class="footer-link" href="{% url 'home' %}">Home</a></li>
+                    <li><a class="footer-link" href="{% url 'collections' %}">Categories</a></li>
+                    <li><a class="footer-link" href="{% url 'cart' %}">Cart</a></li>
+                    <li><a class="footer-link" href="{% url 'wishlist' %}">Wishlist</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h6 class="text-uppercase text-muted">Categories</h6>
+                <ul class="list-unstyled">
+                    {% for item in nav_categories|slice:":6" %}
+                    <li><a class="footer-link" href="{% url 'collectionsview' item.slug %}">{{ item.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h6 class="text-uppercase text-muted">Contact</h6>
+                <p class="text-muted mb-1">support@bookfolio.com</p>
+                <p class="text-muted mb-1">+1 555 412 2233</p>
+                <p class="text-muted mb-0">Boston, MA</p>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom py-3">
+        <div class="container d-flex justify-content-between">
+            <span class="text-muted small">© 2026 BookFolio. All rights reserved.</span>
+            <span class="text-muted small">Built with Django & Bootstrap</span>
+        </div>
+    </div>
+</footer>
